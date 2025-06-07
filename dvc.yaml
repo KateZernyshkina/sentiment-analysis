@@ -1,0 +1,33 @@
+stages:
+  download:
+    cmd: python src/data.py
+    outs:
+      - data/market_comments.csv
+
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+      - data/market_comments.csv
+    outs:
+      - data/clean_comments.csv
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - data/clean_comments.csv
+      - configs/model.yaml
+      - configs/train.yaml
+    outs:
+      - model/
+      - tokenizer.pkl
+      - label_encoder.pkl
+    params:
+      - train.batch_size
+      - train.epochs
+
+  export:
+    cmd: python src/export.py
+    deps:
+      - model/
+    outs:
+      - model.onnx

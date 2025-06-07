@@ -1,0 +1,4 @@
+preprocess:
+  remove_numbers: true
+  remove_punctuation: true
+  stopwords_language: russian
